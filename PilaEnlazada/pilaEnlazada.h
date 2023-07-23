@@ -24,19 +24,19 @@ int p_getLen (const pilaEnlazadaT pila);
 @param nodoNuevo nodo a insertar
 @return 1 operacion exitosa,
 @return 0 operacion fallida*/
-int p_push(pilaEnlazadaT pila, NodoT *nodoNuevo );
+int p_push(pilaEnlazadaT pila, DatoT datoNuevo );
 
 /*saca un nodo del tope de una pila
 @param pila pila en la que se va a insertar el nodo
 @return la direccion del nodo obtenido,
 @return NULL en caso de no haber podido obtener ningunn nodo*/
-NodoT* p_pop(pilaEnlazadaT pila);
+DatoT p_pop(pilaEnlazadaT pila);
 
 /*obtiene el nodo del tope de una pila, pero no lo saca de la pila
 @param pila pila en la que se va a insertar el nodo
 @return la direccion del nodo obtenido,
 @return NULL en caso de no haber podido obtener ningunn nodo*/
-NodoT* p_top(pilaEnlazadaT pila);
+DatoT p_top(pilaEnlazadaT pila);
 
 /*Vacia la pila
 @param pila pila a ser vaciada
