@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct NodoTest NodoT; //alias para el nombre del nodo, en caso de querer implementar otro nodo sse cambia NodoTest por el nombre del nodo nuevo
+typedef struct Nodo NodoT; //alias para el nombre del nodo, en caso de querer implementar otro nodo sse cambia NodoTest por el nombre del nodo nuevo
 typedef int DatoT; //alias para los campos de datos del nodo
 
 /*Crea un nodo y retorna su direccion de memoria

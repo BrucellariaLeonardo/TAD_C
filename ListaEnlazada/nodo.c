@@ -1,9 +1,9 @@
 #include "nodo.h"
 
-struct NodoTest
+struct Nodo
 {
     DatoT dato;
-    struct NodoTest *pNext;
+    struct Nodo *pNext;
 };
 
 
