@@ -37,6 +37,13 @@ int insertarUltimo(ListaEnlazadaT lista, NodoT *nodoNuevo );
 @return 0 operacion fallida*/
 int insertarPos(ListaEnlazadaT lista, NodoT *nodoNuevo, int pos );
 
+/*Inserta un nodo de forma ordenada
+@param lista lista en la que se va a insertar el nodo
+@param nodoNuevo nodo a insertar
+@return 1 operacion exitosa,
+@return 0 operacion fallida*/
+int insertarOrdenado(ListaEnlazadaT lista, NodoT *nodoNuevo);
+
 /*Imprime el nodo de la posicion indicada
 @param lista lista de la que se desea imprimir
 @param pos posicion que desea imprimir
@@ -61,11 +68,26 @@ NodoT* getPos(const ListaEnlazadaT lista, int pos);
 @retrun 0 en caso de falla*/
 int setPos(const ListaEnlazadaT lista, int pos, DatoT dato);
 
-/*Inserta un nodo de forma ordenada
-@param lista lista en la que se va a insertar el nodo
-@param nodoNuevo nodo a insertar
-@return 1 operacion exitosa,
-@return 0 operacion fallida*/
-int insertarOrdenado(ListaEnlazadaT lista, NodoT *nodoNuevo);
+/*Busca la posicion del primer nodo que contiene un dato
+@param lista lista en la que se debe buscar
+@param dato dato que se esta buscando en la lista
+@return  posicion en la que se encuentra el dato, en caso de no encontrar el dato se retorna -1*/
+int buscarDato(const ListaEnlazadaT lista, DatoT dato);
 
+/*Busca la posicion del primer nodo que contiene un dato especificado y lo elimina
+@param lista lista en la que se debe buscar
+@param dato dato que se esta eliminando de la lista
+@return  1 en caso de exito y 0 en caso de fracaso*/
+int eliminarDato(const ListaEnlazadaT lista, DatoT dato);
+
+/*Busca el nodo de la posicion especificada y lo elimina
+@param lista lista en la que se debe buscar
+@param pos posicion a eliminar
+@return  1 en caso de exito y 0 en caso de fracaso*/
+int eliminarPos(const ListaEnlazadaT lista, int pos);
+
+/*Vacia la lista
+@param lista lista a ser vaciada
+@return 1 en caso de exito y 0 en caso de fallo*/
+void vaciarLista(const ListaEnlazadaT lista);
 #endif

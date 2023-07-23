@@ -157,3 +157,103 @@ int setPos(const ListaEnlazadaT lista, int pos, DatoT dato)
     }
     return res;
 }
+
+int buscarDato(const ListaEnlazadaT lista, DatoT dato)
+{
+    NodoT* nodo = NULL;
+    int pos = -1; //asumo que el elemento no se encuentra en la lista
+    if(lista->len) // comprebo que no se este buscando en una lista vacia
+    {
+        nodo = lista->pPrimero;
+        int posActual = 0;
+        while (nodo != NULL) //recorro toda la lista
+        {
+            if(dato == getDato(nodo)) //si encuentro el dato, guardo la posicion y paro
+            {
+                pos = posActual;
+                break;
+            }
+            nodo = getNext(nodo);
+            posActual++;
+        }
+    }
+    return pos;
+}
+
+int eliminarDato(const ListaEnlazadaT lista, DatoT dato)
+{
+    NodoT* nodo = NULL, *anterior = NULL;
+    int ret = 0; //asumo que el elemento no se encuentra en la lista
+    if(lista->len) // comprebo que no se este buscando en una lista vacia
+    {
+        nodo = lista->pPrimero;
+        if(dato == getDato(nodo)) //si mi dato buscado es mi cabeza de la lista
+        {
+         lista->pPrimero = getNext(nodo);
+         freeNodo(nodo);
+         lista->len--;
+         ret = 1;   
+        }else{
+            while (getNext(nodo) != NULL) //recorro toda la lista
+            {
+                anterior = nodo;
+                nodo = getNext(nodo);
+                if(dato == getDato(nodo)) //si encuentro el dato, guardo la posicion y paro
+                {
+                    setNext(anterior, getNext(nodo)); //desconecto el nodo
+                    freeNodo(nodo);
+                    ret = 1;
+                    lista->len--;
+                    break;
+                }
+            }
+        }
+    }
+    return ret;
+}
+
+int eliminarPos(const ListaEnlazadaT lista, int pos)
+{
+    NodoT* nodo = NULL, *anterior = NULL;
+    int ret = 0; //asumo que no se puede hacer la operacion
+    if(((pos < lista->len) && (pos>=0) )) //compruebo que sea una posicion valida
+    {
+        nodo = lista->pPrimero;
+        int posActual = 0;
+        while (posActual != pos) //busco la direccion del nodo anterior a la posicion que se quiere insertar
+        {
+            anterior = nodo;
+            nodo = getNext(nodo);
+            posActual++;
+        }
+        if(posActual == 0) //si estoy trabajando con el primero o el ultimo, actualizo los punteros de cabecera y cola
+        {
+            lista->pPrimero = getNext(nodo);
+        }else if(posActual == (lista->len)-1)
+        {
+            setNext(lista->pUtimo, anterior);
+            setNext(anterior, NULL);
+        }else{
+            setNext(anterior, getNext(nodo));
+        }
+        free(nodo);
+        ret = 1;
+        lista->len--;
+
+    }
+    return ret;
+}
+
+void vaciarLista(const ListaEnlazadaT lista)
+{
+    NodoT *nodo;
+    while(lista->pPrimero != NULL)
+    {
+        nodo = lista->pPrimero;
+        lista->pPrimero = getNext(lista->pPrimero);
+        freeNodo(nodo);
+        lista->len--;
+    }
+    lista->pUtimo = NULL;
+    return;
+}
