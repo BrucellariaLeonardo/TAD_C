@@ -125,6 +125,39 @@ int insertarOrdenado(ListaEnlazadaT lista, DatoT datoNuevo)
     return exito;
 }
 
+int insertarOrdenadoR(ListaEnlazadaT lista, DatoT datoNuevo)
+{
+    int exito = 1;
+    if(lista->len == 0 ) //si la lista esta vacia, no se pueden hacer comparaciones y el dato va al principio
+    {
+        exito = insertarPrimero(lista, datoNuevo);
+    }else{
+        NodoT *nodoNuevo = newNodo(datoNuevo);
+        if(nodoNuevo == NULL)
+        {
+            exito = 0;
+        }else{
+            if(compNodo(nodoNuevo, lista->pPrimero) > 0) //si el elemento a insertar es menor que el primer elmento de la lista
+            {
+                setNext(nodoNuevo, lista->pPrimero);
+                lista->pPrimero = nodoNuevo;
+                lista->len++;
+            }else{
+                NodoT* nodoAnterior = lista->pPrimero;
+                NodoT* nodoSiguente = getNext(nodoAnterior);
+                while ( (nodoSiguente != NULL ) && (compNodo(nodoNuevo, nodoSiguente) <= 0)) //busco la direccion del nodo anterior a la posicion que se quiere insertar
+                {
+                    nodoAnterior = nodoSiguente;
+                    nodoSiguente = getNext(nodoSiguente);
+                }
+                insertarNodo(nodoAnterior,nodoNuevo);   //inserto el nodo
+                lista->len++;
+            }  
+        }
+    }
+    return exito;
+}
+
 int printPos(const ListaEnlazadaT lista, int pos)
 {
     int exito = 1;

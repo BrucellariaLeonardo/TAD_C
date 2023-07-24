@@ -44,6 +44,13 @@ int insertarPos(ListaEnlazadaT lista, DatoT datoNuevo, int pos );
 @return 0 operacion fallida*/
 int insertarOrdenado(ListaEnlazadaT lista, DatoT datoNuevo);
 
+/*Inserta un nodo de forma ordenada de mayor a menor
+@param lista lista en la que se va a insertar el nodo
+@param datoNuevo dato a insertar
+@return 1 operacion exitosa,
+@return 0 operacion fallida*/
+int insertarOrdenadoR(ListaEnlazadaT lista, DatoT datoNuevo);
+
 /*Imprime el nodo de la posicion indicada
 @param lista lista de la que se desea imprimir
 @param pos posicion que desea imprimir
