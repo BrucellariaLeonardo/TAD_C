@@ -1,5 +1,5 @@
 #include "listaEnlazada.h"
-
+#define POS_INEXISTENTE 5
 struct ListaEnlazada
 {
 int len;
@@ -26,8 +26,9 @@ ListaEnlazadaT crearLista() //retorna una lista
     return listaNueva;
 }
 
-int insertarPrimero(ListaEnlazadaT lista, NodoT *nodoNuevo )
+int insertarPrimero(ListaEnlazadaT lista, DatoT datoNuevo )
 {
+    NodoT *nodoNuevo = newNodo(datoNuevo);
     int exito = 1; //flag para indicar fallo al insertar el nodo
     if(nodoNuevo != NULL) //si el nodo es valido
     {
@@ -42,9 +43,10 @@ int insertarPrimero(ListaEnlazadaT lista, NodoT *nodoNuevo )
     return exito;
 }
 
-int insertarUltimo(ListaEnlazadaT lista, NodoT *nodoNuevo )
+int insertarUltimo(ListaEnlazadaT lista, DatoT datoNuevo )
 {
     int exito = 1; //flag para indicar fallo al insertar el nodo
+    NodoT *nodoNuevo = newNodo(datoNuevo);
     if(nodoNuevo != NULL) //si el nodo es valido
     {
         if(lista->len == 0) //si la lista estaba vacia, el primer elemento tambien es el ultimo
@@ -59,52 +61,66 @@ int insertarUltimo(ListaEnlazadaT lista, NodoT *nodoNuevo )
     return exito;
 }
 
-int insertarPos(ListaEnlazadaT lista, NodoT *nodoNuevo, int pos )
+int insertarPos(ListaEnlazadaT lista, DatoT datoNuevo, int pos )
 {
     int exito = 1;
-    if((pos > lista->len )|| (nodoNuevo == NULL)) //compruebo que sea una posicion valida y un nodo no nulo
+    if((pos > lista->len )) //compruebo que sea una posicion valida
     {
         exito = 0;
     }else{
         if(pos == 0) //si se lo va insertar primero
         {
-            insertarPrimero(lista, nodoNuevo);
+            exito = insertarPrimero(lista, datoNuevo);
         }else{
-        NodoT* nodoAnterior = lista->pPrimero;
-        int posActual = 1;
-        while (posActual != pos) //busco la direccion del nodo anterior a la posicion que se quiere insertar
-        {
-            nodoAnterior = getNext(nodoAnterior);
-            posActual++;
-        }
-        insertarNodo(nodoAnterior,nodoNuevo);   //inserto el nodo
-        lista->len++;
+            NodoT* nodoAnterior = lista->pPrimero;
+            int posActual = 1;
+            while (posActual != pos) //busco la direccion del nodo anterior a la posicion que se quiere insertar
+            {
+                nodoAnterior = getNext(nodoAnterior);
+                posActual++;
+            }
+            NodoT *nodoNuevo = newNodo(datoNuevo);
+            if(nodoNuevo == NULL)
+            {
+                exito = 0;
+            }else{
+                insertarNodo(nodoAnterior,nodoNuevo);   //inserto el nodo
+                lista->len++;
+            }
         }  
     }
     return exito;
 }
 
-int insertarOrdenado(ListaEnlazadaT lista, NodoT *nodoNuevo)
+int insertarOrdenado(ListaEnlazadaT lista, DatoT datoNuevo)
 {
     int exito = 1;
     if(lista->len == 0 ) //si la lista esta vacia, no se pueden hacer comparaciones y el dato va al principio
     {
-        exito = insertarPrimero(lista, nodoNuevo);
+        exito = insertarPrimero(lista, datoNuevo);
     }else{
-        if(compNodo(nodoNuevo, lista->pPrimero) <= 0) //si el elemento a insertar es menor que el primer elmento de la lista
+        NodoT *nodoNuevo = newNodo(datoNuevo);
+        if(nodoNuevo == NULL)
         {
-            exito = insertarPrimero(lista, nodoNuevo);
+            exito = 0;
         }else{
-            NodoT* nodoAnterior = lista->pPrimero;
-            NodoT* nodoSiguente = getNext(nodoAnterior);
-            while ( (nodoSiguente != NULL ) && (compNodo(nodoNuevo, nodoSiguente) > 0)) //busco la direccion del nodo anterior a la posicion que se quiere insertar
+            if(compNodo(nodoNuevo, lista->pPrimero) <= 0) //si el elemento a insertar es menor que el primer elmento de la lista
             {
-                nodoAnterior = nodoSiguente;
-                nodoSiguente = getNext(nodoSiguente);
-            }
-            insertarNodo(nodoAnterior,nodoNuevo);   //inserto el nodo
-            lista->len++;
-        }  
+                setNext(nodoNuevo, lista->pPrimero);
+                lista->pPrimero = nodoNuevo;
+                lista->len++;
+            }else{
+                NodoT* nodoAnterior = lista->pPrimero;
+                NodoT* nodoSiguente = getNext(nodoAnterior);
+                while ( (nodoSiguente != NULL ) && (compNodo(nodoNuevo, nodoSiguente) > 0)) //busco la direccion del nodo anterior a la posicion que se quiere insertar
+                {
+                    nodoAnterior = nodoSiguente;
+                    nodoSiguente = getNext(nodoSiguente);
+                }
+                insertarNodo(nodoAnterior,nodoNuevo);   //inserto el nodo
+                lista->len++;
+            }  
+        }
     }
     return exito;
 }
@@ -129,11 +145,12 @@ int printPos(const ListaEnlazadaT lista, int pos)
     return exito;
 }
 
-NodoT* getPos(const ListaEnlazadaT lista, int pos)
+DatoT getPos(const ListaEnlazadaT lista, int pos)
 {
-    NodoT* nodo = NULL;
+    DatoT dato;
     if((pos < lista->len )) //compruebo que sea una posicion valida
     {
+        NodoT *nodo = NULL;
         nodo = lista->pPrimero;
         int posActual = 0;
         while (posActual != pos) //busco la direccion del nodo anterior a la posicion que se quiere insertar
@@ -141,19 +158,29 @@ NodoT* getPos(const ListaEnlazadaT lista, int pos)
             nodo = getNext(nodo);
             posActual++;
         }
+        dato = getDato(nodo);
+    }else{
+        exit(POS_INEXISTENTE);
     }
-    return nodo;
+    return dato;
 }
 
 int setPos(const ListaEnlazadaT lista, int pos, DatoT dato)
 {
     int res = 1; //flag de exito
-    NodoT* nodo = getPos(lista, pos); //busco la posicio
-    if(nodo != NULL)    //compruebo que si se encontro el nodo
+    if((pos < lista->len )) //compruebo que sea una posicion valida
     {
+        NodoT *nodo = NULL;
+        nodo = lista->pPrimero;
+        int posActual = 0;
+        while (posActual != pos) //busco la direccion del nodo anterior a la posicion que se quiere insertar
+        {
+            nodo = getNext(nodo);
+            posActual++;
+        }
         setDato(nodo, dato); //sobreescribo el dato
     }else{
-        res = 0;
+        exit(POS_INEXISTENTE);
     }
     return res;
 }
