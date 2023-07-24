@@ -65,12 +65,16 @@ DatoT p_pop(pilaEnlazadaT pila)
 
 DatoT p_top(pilaEnlazadaT pila)
 {
-    NodoT* elemento = NULL;
-    if(pila->pPrimero != NULL) //me fijo que la pila no este vacia
+    DatoT dato;
+    if(pila->pPrimero == NULL) //me fijo que la pila no este vacia
     {
-        elemento = pila->pPrimero;
+        exit(PIL_VACIA);
+    }else
+    {
+    dato = getDato(pila->pPrimero);
+
     }
-    return getDato(elemento);
+    return dato;
 }
 
 void p_vaciarPila(const pilaEnlazadaT pila)
