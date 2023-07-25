@@ -4,3 +4,8 @@ ListaEnlazada/test.c
 PilaEnlazada/test.c
 ListaEnlazada/conjuntos.c
 PilaEnlazada/a
+.vscode/tasks.json
+*a
+*.out
+*.rar
+*.txt
